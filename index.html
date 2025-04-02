@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <title>Cari Data dari Google Sheets</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input { padding: 8px; font-size: 16px; }
+        button { padding: 8px 12px; font-size: 16px; cursor: pointer;}
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #d9d9d9; }
+    </style>
+</head>
+<body>
+    <h2>Carian Data Pesakit</h2>
+
+    <input type="text" id="carian" placeholder="Masukkan Nama / R/N / No. Kad Pengenalan">
+    <button onclick="cariData()">Cari</button>
+
+    <div id="hasil"></div>
+
+    <script>
+        let spreadsheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYhFI5Tzsbfvy9ncpPNRJxSVWh1Ln2p2KyXqgGe__mL-n6O7-e113vf0oFxti24g/pub?output=csv";
+        let sheetData = [];
+        let header = [];
+
+        async function fetchData() {
+            try{
+                let response = await fetch(spreadsheetURL);
+                let dataText = await response.text();
+                let rows = dataText.trim().split("\n");
+                header = rows[0].split(",");
+                sheetData = rows.slice(1).map(row => row.split(","));
+            } catch(err){
+                console.error("Terdapat ralat semasa mengambil data:", err);
+            }
+        }
+
+        function cariData() {
+            let query = document.getElementById("carian").value.toLowerCase().trim();   
+            let hasilCarian = sheetData.filter(row =>
+                row.some(col => col.toLowerCase().includes(query))               
+            );
+
+            paparkanData(hasilCarian);
+        }
+
+        function paparkanData(data) {
+        let htmlContent = `<table>
+                            <tr>
+                                <th>Tahun</th>
+                                <th>Bulan</th>
+                                <th>Bil.</th>
+                                <th>R/N</th>
+                                <th>Nama</th>
+                                <th>No. Kad Pengenalan</th>
+                                <th>Warganegara</th>
+                                <th>Bangsa</th>
+                                <th>Jantina</th>
+                                <th>Umur</th>
+                                <th>Kumpulan Umur</th>
+                                <th>Mahkamah</th>
+                                <th>Tempat</th>
+                                <th>Negeri</th>
+                                <th>Daerah (Johor)</th>
+                                <th>No. Kes</th>
+                                <th>Akta</th>
+                                <th>Tuduhan</th>
+                                <th>Kategori Tuduhan</th>
+                                <th>Keterangan Pertuduhan</th>
+                                <th>Tahanan Seksyen</th>
+                                <th>Tarikh Kemasukan</th>
+                                <th>Laporan Psikiatri Siap</th>
+                                <th>Tarikh Discaj</th>
+                                <th>1st Diagnosis</th>
+                            </tr>`;
+
+            if(data.length === 0){
+                htmlContent +="<tr><td colspan='"+header.length+"'>Tiada data ditemui.</td></tr>";
+            } else {
+                data.forEach(row => {
+                htmlContent += `<tr>
+                    <td>${row[0]}</td>
+                    <td>${row[1]}</td>
+                    <td>${row[2]}</td>
+                    <td>${row[3]}</td>
+                    <td>${row[4]}</td>
+                    <td>${row[5]}</td>
+                    <td>${row[6]}</td>
+                    <td>${row[7]}</td>
+                    <td>${row[8]}</td>
+                    <td>${row[9]}</td>
+                    <td>${row[10]}</td>
+                    <td>${row[11]}</td>
+                    <td>${row[12]}</td>
+                    <td>${row[13]}</td>
+                    <td>${row[14]}</td>
+                    <td>${row[15]}</td>
+                    <td>${row[16]}</td>
+                    <td>${row[17]}</td>
+                    <td>${row[18]}</td>
+                    <td>${row[19]}</td>
+                    <td>${row[20]}</td>
+                    <td>${row[21]}</td>
+                    <td>${row[23]}</td>
+                    <td>${row[30]}</td>
+                    <td>${row[31]}</td>          
+                </tr>`;
+                });
+            }
+            htmlContent += "</table>";
+            document.getElementById("hasil").innerHTML = htmlContent;
+        }
+
+        // Muatan awal data dari Google Sheets semasa laman dibuka.
+        fetchData();
+    </script>
+</body>
+</html>
