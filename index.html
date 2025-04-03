@@ -68,6 +68,14 @@
 </head>
 <body>
 
+    <script>
+        document.addEventListener("mousemove", function(event) {
+            let xPos = event.clientX / window.innerWidth * 50;
+            let yPos = event.clientY / window.innerHeight * 50;
+            document.body.style.backgroundPosition = `${xPos}% ${yPos}%`;
+        });
+    <script>
+        
     <div class="background-container">
         <div class="content-box">
             <img src="https://i.postimg.cc/L8PbJ7GJ/Logo-HPJB.png" alt="Bahagian Psikiatri Forensik HPJB" width="100">
