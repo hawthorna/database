@@ -155,14 +155,19 @@
                 let adaCarian = query ? row.some(col => col.toLowerCase().includes(query)) : true;      
             
                 if (!row[24]) return adaCarian;
-                
-                let tarikhKemasukan = row[24]; 
-                let tarikhFormatBetul = tarikhKemasukan.match(/\d{2}\/\d{2}\/\d{4}/); // Semak format DD/MM/YYYY
+
+                let tarikhKemasukan = row[24].trim();
+                let tarikhFormatBetul = tarikhKemasukan.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/);
 
                 if (tarikhFormatBetul) {
+                    tarikhKemasukan = tarikhKemasukan.replace(/-/g, "/"); // Ganti - dengan /
                     let [day, month, year] = tarikhKemasukan.split("/");
-                    let tarikhObj = new Date(`${year}-${month}-${day}`); // Format ke YYYY-MM-DD
-
+                    let tarikhObj = new Date(`${year}-${month}-${day}`);
+    
+                    // Teruskan bandingkan tarikhObj dengan tarikhMula & tarikhAkhir
+              
+                }
+                
                 let dalamJulat = true;
                 if (tarikhMula) {
                     dalamJulat = dalamJulat && (tarikhObj >= new Date(tarikhMula));
