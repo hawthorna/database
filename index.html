@@ -64,7 +64,7 @@
                 let adaCarian = query ? row.some(col => col.toLowerCase().includes(query)) : true;      
             
                 // Anggap tarikh kemasukan berada di lajur ke-10 (indeks 9 dalam array)
-                let tarikhKemasukan = row[9]; 
+                let tarikhKemasukan = row[24]; 
                 let tarikhFormatBetul = tarikhKemasukan.match(/\d{2}\/\d{2}\/\d{4}/); // Semak format DD/MM/YYYY
 
                 if (tarikhFormatBetul) {
