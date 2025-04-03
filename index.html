@@ -65,6 +65,39 @@
             paparkanData(hasilCarian);
         }
 
+        function cariData() {
+    let query = document.getElementById("carian").value.toLowerCase().trim();
+    let tarikhMula = document.getElementById("tarikh-mula").value;
+    let tarikhAkhir = document.getElementById("tarikh-akhir").value;
+    
+    let hasilCarian = sheetData.filter(row => {
+        let adaCarian = query ? row.some(col => col.toLowerCase().includes(query)) : true;
+
+        // Anggap tarikh kemasukan berada di lajur ke-10 (indeks 9 dalam array)
+        let tarikhKemasukan = row[9]; 
+        let tarikhFormatBetul = tarikhKemasukan.match(/\d{2}\/\d{2}\/\d{4}/); // Semak format DD/MM/YYYY
+
+        if (tarikhFormatBetul) {
+            let [day, month, year] = tarikhKemasukan.split("/");
+            let tarikhObj = new Date(`${year}-${month}-${day}`); // Format ke YYYY-MM-DD
+
+            let dalamJulat = true;
+            if (tarikhMula) {
+                dalamJulat = dalamJulat && (tarikhObj >= new Date(tarikhMula));
+            }
+            if (tarikhAkhir) {
+                dalamJulat = dalamJulat && (tarikhObj <= new Date(tarikhAkhir));
+            }
+
+            return adaCarian && dalamJulat;
+        }
+
+        return adaCarian;
+    });
+
+    paparkanData(hasilCarian);
+        }
+
         function paparkanData(data) {
         let htmlContent = `<table>
                             <tr>
