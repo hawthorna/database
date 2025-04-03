@@ -2,41 +2,88 @@
 <html lang="ms">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Carian Maklumat Pesakit</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        input { padding: 8px; font-size: 14px; }
-        button { padding: 8px 12px; font-size: 16px; cursor: pointer;}
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; }
-        th { background-color: #d9d9d9; }
-         td {
-            white-space: nowrap;  /* Elakkan teks pecah ke baris baru */
-            text-align: center;    /* Pusatkan teks dalam sel */
-            padding: 10px;         /* Berikan ruang dalam sel */
+        /* Gaya untuk latar belakang utama */
+        .background-container {
+            position: relative;
+            background-image: url('https://i.postimg.cc/T1Wrk8Vm/Screenshot-2025-04-03-193733.png');
+            background-size: cover;
+            background-position: center;
+            height: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
         }
-        th {
-            text-align: center;    /* Pusatkan tajuk jadual */
+
+        /* Lapisan kabur */
+        .background-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            filter: blur(10px); /* Efek kabur */
+            z-index: -1;
         }
-    </style>       
+
+        /* Kotak kandungan supaya lebih jelas */
+        .content-box {
+            position: relative;
+            background: rgba(0, 0, 0, 0.6); /* Latar belakang separa gelap */
+            padding: 30px;
+            border-radius: 10px;
+            color: white;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        /* Gaya input dan butang */
+        input, button {
+            padding: 10px;
+            margin: 10px 0;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    </header>
-    <div style="background-image : url('https://i.postimg.cc/T1Wrk8Vm/Screenshot-2025-04-03-193733.png');background-size: cover; height: 1200px;">
-        <img src="https://i.postimg.cc/L8PbJ7GJ/Logo-HPJB.png" alt="Bahagian Psikiatri Forensik HPJB">
-        <h2>Sistem Carian Maklumat Pesakit</h2>
-    <header>
 
-    <input type="text" id="carian" placeholder="Masukkan Nama / R/N / No. Kad Pengenalan">
-    <br><br>
-    <label for="tarikh-mula">Tarikh Mula:</label>
-    <input type="date" id="tarikh-mula">
-    <label for="tarikh-akhir">Tarikh Akhir:</label>
-    <input type="date" id="tarikh-akhir">
-    <br><br>
-    <button onclick="cariData()">Cari</button>
-    
-    <div id="hasil"></div>
+    <div class="background-container">
+        <div class="content-box">
+            <img src="https://i.postimg.cc/L8PbJ7GJ/Logo-HPJB.png" alt="Bahagian Psikiatri Forensik HPJB" width="100">
+            <h2>Sistem Carian Maklumat Pesakit</h2>
+
+            <input type="text" id="carian" placeholder="Masukkan Nama / R/N / No. Kad Pengenalan">
+            <br><br>
+            <label for="tarikh-mula">Tarikh Mula:</label>
+            <input type="date" id="tarikh-mula">
+            <label for="tarikh-akhir">Tarikh Akhir:</label>
+            <input type="date" id="tarikh-akhir">
+            <br><br>
+            <button onclick="cariData()">Cari</button>
+
+            <div id="hasil"></div>
+        </div>
+    </div>
 
     <script>
         let spreadsheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQYhFI5Tzsbfvy9ncpPNRJxSVWh1Ln2p2KyXqgGe__mL-n6O7-e113vf0oFxti24g/pub?output=csv";
