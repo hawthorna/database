@@ -153,10 +153,36 @@
             }
         }
 
-        function cariDataCarian() {
+        function cariData() {
             let query = document.getElementById("carian").value.toLowerCase().trim();
+            let tarikhMula = document.getElementById("tarikh-mula").value;
+            let tarikhAkhir = document.getElementById("tarikh-akhir").value;
 
             console.log("Carian:", query);
+            console.log("Tarikh Mula:", tarikhMula);
+            console.log("Tarikh Akhir:", tarikhAkhir);
+            
+            let hasilCarian = sheetData.filter(row => {
+                let adaCarian = query ? row.some(col => col.toLowerCase().includes(query)) : true;      
+            
+                if (!row[24]) return adaCarian;
+
+                let tarikhKemasukan = row[24]; 
+                let tarikhFormatBetul = tarikhKemasukan.match(/\d{2}\/\d{2}\/\d{4}/); // Semak format DD/MM/YYYY
+
+                if (tarikhFormatBetul) {
+                   let [day, month, year] = tarikhKemasukan.split("/");
+                   let tarikhObj = new Date(`${year}-${month}-${day}`); // Format ke YYYY-MM-DD
+                    
+                let dalamJulat = true;
+                if (tarikhMula) {
+                    dalamJulat = dalamJulat && (tarikhObj >= new Date(tarikhMula));
+                }
+                if (tarikhAkhir) {
+                    dalamJulat = dalamJulat && (tarikhObj <= new Date(tarikhAkhir));
+                }
+                console.log("Tarikh Kemasukan:", tarikhObj, "Dalam Julat:", dalamJulat);
+                return adaCarian && dalamJulat;
 
         // Filter data berdasarkan Nama, RN, atau No. Kad Pengenalan
             let hasilCarian = sheetData.filter(row => {
