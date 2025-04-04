@@ -178,33 +178,36 @@
             console.log("Carian:", query);
             console.log("Tarikh Mula:", tarikhMula);
             console.log("Tarikh Akhir:", tarikhAkhir);
-            
-            let hasilCarian = sheetData.filter(row => {
-                let adaCarian = query ? row.some(col => col.toLowerCase().includes(query)) : true;      
-            
-                if (!row[24]) return adaCarian;
+    
+        let hasilCarian = sheetData.filter(row => {
+            let tarikhKemasukan = row[24];
 
-                let tarikhKemasukan = row[24]; 
-                let tarikhFormatBetul = tarikhKemasukan.match(/\d{2}\/\d{2}\/\d{4}/); // Semak format DD/MM/YYYY
+        // Jika tiada tarikh kemasukan, terus tolak
+            if (!tarikhKemasukan) return false;
 
-                if (tarikhFormatBetul) {
-                   let [day, month, year] = tarikhKemasukan.split("/");
-                   let tarikhObj = new Date(`${year}-${month}-${day}`); // Format ke YYYY-MM-DD
-                    
-                let dalamJulat = true;
-                if (tarikhMula) {
-                    dalamJulat = dalamJulat && (tarikhObj >= new Date(tarikhMula));
-                }
-                if (tarikhAkhir) {
-                    dalamJulat = dalamJulat && (tarikhObj <= new Date(tarikhAkhir));
-                }
-                console.log("Tarikh Kemasukan:", tarikhObj, "Dalam Julat:", dalamJulat);
-                return adaCarian && dalamJulat;
-            }
-           return adaCarian;
-                
+        // Semak format tarikh (DD/MM/YYYY)
+           let tarikhFormatBetul = tarikhKemasukan.match(/\d{2}\/\d{2}\/\d{4}/);
+           if (!tarikhFormatBetul) return false;
+
+        // Tukar kepada objek Date
+           let [day, month, year] = tarikhKemasukan.split("/");
+           let tarikhObj = new Date(`${year}-${month}-${day}`);
+
+        // Tapis ikut julat
+           if (tarikhMula && tarikhObj < new Date(tarikhMula)) return false;
+           if (tarikhAkhir && tarikhObj > new Date(tarikhAkhir)) return false;
+
+        // Tapis ikut carian (jika ada)
+           if (query) {
+               let adaCarian = row.some(col => col.toLowerCase().includes(query));
+               if (!adaCarian) return false;
+        }
+
+           console.log("LULUS ->", tarikhObj);
+           return true;
+     
         });
-                
+
         paparkanData(hasilCarian);
 
         }
