@@ -183,16 +183,6 @@
                 }
                 console.log("Tarikh Kemasukan:", tarikhObj, "Dalam Julat:", dalamJulat);
                 return adaCarian && dalamJulat;
-
-        // Filter data berdasarkan Nama, RN, atau No. Kad Pengenalan
-            let hasilCarian = sheetData.filter(row => {
-            let adaCarian = false;
-
-            if (query) {
-            // Carian berdasarkan Nama (row 7), RN (row 8), No. Kad Pengenalan (row 9)
-            adaCarian = row[7].toLowerCase().includes(query) ||  // Nama (row 7)
-                        row[8].toLowerCase().includes(query) ||  // RN (row 8)
-                        row[9].toLowerCase().includes(query);    // No. Kad Pengenalan (row 9)
             }
            return adaCarian;
         });
