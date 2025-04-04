@@ -315,6 +315,7 @@
             if(data.length === 0){
                 htmlContent +="<tr><td colspan='"+header.length+"'>Tiada data ditemui.</td></tr>";
             } else {
+            let htmlContent = "<table>..."; // buka jadual
                 data.forEach(row => {
                 htmlContent += `<tr>
                     <td>${row[0]}</td>
