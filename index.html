@@ -156,18 +156,13 @@
             
                 if (!row[24]) return adaCarian;
 
-                let tarikhKemasukan = row[24].trim();
-                let tarikhFormatBetul = tarikhKemasukan.match(/^\d{2}[\/-]\d{2}[\/-]\d{4}$/);
+                let tarikhKemasukan = row[24]; 
+                let tarikhFormatBetul = tarikhKemasukan.match(/\d{2}\/\d{2}\/\d{4}/); // Semak format DD/MM/YYYY
 
                 if (tarikhFormatBetul) {
-                    tarikhKemasukan = tarikhKemasukan.replace(/-/g, "/"); // Ganti - dengan /
-                    let [day, month, year] = tarikhKemasukan.split("/");
-                    let tarikhObj = new Date(`${year}-${month}-${day}`);
-    
-                    // Teruskan bandingkan tarikhObj dengan tarikhMula & tarikhAkhir
-              
-                }
-                
+                   let [day, month, year] = tarikhKemasukan.split("/");
+                   let tarikhObj = new Date(`${year}-${month}-${day}`); // Format ke YYYY-MM-DD
+                    
                 let dalamJulat = true;
                 if (tarikhMula) {
                     dalamJulat = dalamJulat && (tarikhObj >= new Date(tarikhMula));
